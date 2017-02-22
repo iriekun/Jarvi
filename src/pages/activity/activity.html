@@ -1,0 +1,35 @@
+<!--
+  Generated template for the Activity page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Activity</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+	<ion-grid>
+		<ion-row>
+			<ion-col style="text-align: center;">
+				<div><h3>{{this.total_point}}</h3> <br> Total Points </div>
+			</ion-col>
+			<ion-col style="text-align: center;">
+				<div> <h3>{{this.total_obs}}</h3> <br> Total Observations </div>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<ion-list>
+		<ion-list-header>History</ion-list-header>
+	  	<ion-item *ngFor="let i of range(this.len)">
+	  		<p>{{this.dateArray[i]}}</p>
+		    <h4>{{this.taskArray[i].split("-")[0]}}</h4>
+		    <p>{{this.taskArray[i].split("-")[1]}}</p>
+	  	</ion-item>
+	</ion-list>
+</ion-content>

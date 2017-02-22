@@ -1,0 +1,27 @@
+<!--
+  Generated template for the SlideStarter page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content class="tutorial-page">
+
+  <ion-slides pager="true">
+    <ion-slide *ngFor="let slide of slides">
+      <ion-toolbar>
+      </ion-toolbar>
+      <img [src]="slide.image" class="slide-image"/>
+      <h2 class="slide-title" [innerHTML]="slide.title"></h2>
+      <p [innerHTML]="slide.description"></p>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer>
+  <div style="width: 50%; float: left">
+    <button ion-button full (click)="openModalSignup()">Join Now</button>
+  </div>
+  <div style="width: 50%; float: left">
+    	<button ion-button full color="light" (click)="openModalLogin()">Login</button>
+  </div>
+</ion-footer>

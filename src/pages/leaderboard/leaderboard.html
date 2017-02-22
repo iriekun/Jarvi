@@ -1,0 +1,25 @@
+<!--
+  Generated template for the Leaderboard page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Leaderboard</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content class="list-avatar-page">
+  <ion-list>
+    <ion-item *ngFor="let i of range(this.len)">
+      <ion-avatar item-left>
+        <img [src]="imageShowOnUi">
+      </ion-avatar>
+      <h2>{{this.nameArray[i]}}</h2>
+      <ion-note item-right>{{this.pointArray[i]}} points</ion-note>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
