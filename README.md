@@ -20,7 +20,7 @@ A lakes observation application written by using Ionic 2 and Firebase
 <li> run ionic run android OR ionic run ios OR ionic serve (if you use Chrome) </li>
 </ul>
 
-Learn more on https://ionicframework.com
+Learn more at https://ionicframework.com
 
 The application was developed for a master thesis research. The goal of the research is to study the impact of gamification(challenge, storytelling, achievement and feeback) on public motivation in participatory sensing systems. An experiment was conducted for 20 days with 41 participants. Participants were randomized and divided into 2 groups. Twenty-one participants used Jarvi(with gamification) and other 20 participants used normal lakes observation application(without gamification).The results suggested that the application with gamification scored higher in user engagement than the normal application.
 
