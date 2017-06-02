@@ -15,14 +15,14 @@ import * as firebase from 'firebase';
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',
-    providers: [UserService]
+  providers: [UserService]
 
 })
 export class ProfilePage {
     public base64Image: any = null;
     public imageShowOnUi: any="";
-    public firstname: any;
-    public lastname: any;
+    public fullname: any;
+    public username: any;
     public databaseRef: any;
     public user: any;
 
@@ -35,8 +35,8 @@ export class ProfilePage {
   ) {
     this.databaseRef = firebase.database().ref();
     this.user = firebase.auth().currentUser;
-    this.firstname="";
-    this.lastname="";
+    this.fullname="";
+    this.username="";
     this.imageShowOnUi="assets/img/avatar.png"
   }
   ionViewDidEnter() {
@@ -49,7 +49,7 @@ export class ProfilePage {
       buttons: [
         {
           text: 'Take Photo ',
-          icon: !this.platform.is('ios') ? 'trash' : null,
+          icon: !this.platform.is('ios') ? 'md-camera' : null,
           handler: () => {
             console.log('Delete clicked');
             this.takePhoto();
@@ -57,7 +57,7 @@ export class ProfilePage {
         },
         {
           text: 'Choose from Libray ',
-          icon: !this.platform.is('ios') ? 'trash' : null,
+          icon: !this.platform.is('ios') ? 'md-image' : null,
           handler: () => {
             console.log('Delete clicked');
             this.openGallery();
@@ -116,18 +116,18 @@ export class ProfilePage {
     });
   }
   updateProfile(){
-    this.userService.updateProfileUser(this.base64Image, this.firstname, this.lastname);
+    this.userService.updateProfileUser(this.base64Image, this.fullname, this.username);
     this.viewCtrl.dismiss();
   }
   userData(): any{
     this.databaseRef.child('/users/'+ this.user.uid).once("value").then((snapshot) =>{
     //  this.getPoints(snapshot.val().user_points);
-      this.getUserData(snapshot.val().user_firstname, snapshot.val().user_lastname, snapshot.val().user_photo);
+      this.getUserData(snapshot.val().user_fullname, snapshot.val().user_name, snapshot.val().user_photo);
     });  
   }
-  getUserData(firstname: any = null, lastname: any=null, photo: any=null): any{
-    this.firstname = firstname;
-    this.lastname = lastname;
+  getUserData(fullname: any = null, username: any=null, photo: any=null): any{
+    this.fullname = fullname;
+    this.username = username;
     this.imageShowOnUi = photo;
   }
 

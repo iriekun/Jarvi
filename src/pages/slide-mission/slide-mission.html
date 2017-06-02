@@ -5,35 +5,46 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton>
     <ion-title>Home</ion-title>
 
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-slides #slides>
-    <ion-slide *ngFor="let slide of task_stories">
-      <ion-buttons end>
-        <button ion-button clear color="primary"(click)="skip(slides)">Skip</button>
-      </ion-buttons>
-      <img [src]="slide" class="slide-image"/>
+<ion-content padding>
+  <ion-slides pager="true" class="swiper-pagination-black">
+    <ion-slide *ngFor="let slide of slides" style="margin-top: 0; padding-top: 0">
+        <div>
+        <img  class="slide-image" [src]=slide.images alt=""/>
+        </div>
+        <div>
+        <span *ngIf="slide.desc!=''">{{this.agent}}</span><p [innerHTML]=slide.desc></p>
+        </div>
+        
     </ion-slide>
 
-    <ion-slide style="background: url('assets/img/lake-bg.jpg'); background-repeat: no-repeat; background-size:100% 100%;">
-      <h4> Your mission is to observe the {{task_name}}</h4>
-      <h6> Submit observation as many as possible to be the top on leaderboard. You will earn 20 points for each observation; however, you will lose 5 point each day counting from the last day you submit your observation! </h6>
-     
-      <h2 class="slide-title">Are You Ready to Accept this Mission?</h2>
-      <div padding style="width: 50%; float: left">
-	       <button ion-button round>NO</button>
-	    </div>
-	    <div padding style="width: 50%; float: left">
-	   	   <button ion-button color="light" round (click)="openModalObservationPage()">YES</button>
-  	  </div>
-      <button style="color: #FFFFFF;" (click)="openModalResetPwd()" ion-button small clear icon-right>
-        <u>Learn more about ice seansonailty observation</u>
-      </button>
+
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>
+          WHAT IS YOUR MISSION?
+        </ion-card-header>
+        <ion-card-content color="text">
+          Your mission is to observe the ice condition of lakes around you. <br/>You have to submit at least 20 observations in 20 days. You will find the available observation points around you on the map. Click on the observation point and submit your observation.
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          WHAT ARE THE RULES?
+        </ion-card-header>
+        <ion-card-content color="text">
+          You will earn 20 points for each submission. However, you will lose 5 points each day if you don't submit your observation every day. <br/> 
+        </ion-card-content>
+      </ion-card>
+      <ion-card>         
+       <button ion-button block color="secondary" (click)="goToTabPage()">Get Started</button>
+      </ion-card>
     </ion-slide>
   </ion-slides>
 </ion-content>

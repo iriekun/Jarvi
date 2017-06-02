@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Component } from '@angular/core';
 import { ModalController, NavController, ViewController, NavParams, AlertController } from 'ionic-angular';
-import { FormBuilder } from '@angular/forms';
 import { Camera, Geolocation } from 'ionic-native';
 import * as firebase from 'firebase';
 import { ObservationService } from '../../providers/observation-service';
@@ -21,23 +20,35 @@ import { ObservationService } from '../../providers/observation-service';
   Ionic pages and navigation.
 */
 var ObservationPage = (function () {
-    function ObservationPage(navCtrl, viewCtrl, modalCtrl, observationService, formBuilder, navParams, alertCtrl) {
-        // this.submitObsForm = formBuilder.group({
-        //     detail: ['', Validators.compose([Validators.required])],
-        //   });
+    function ObservationPage(navCtrl, viewCtrl, modalCtrl, observationService, navParams, alertCtrl) {
         this.navCtrl = navCtrl;
         this.viewCtrl = viewCtrl;
         this.modalCtrl = modalCtrl;
         this.observationService = observationService;
-        this.formBuilder = formBuilder;
         this.navParams = navParams;
         this.alertCtrl = alertCtrl;
         this.base64Image = null;
+        this.task_option_name = "Ice Condition";
+        this.task_options = ["No", "Partial", "Compact"];
+        this.obsValues = ["No", "Partial", "Compact"];
+        //  this.obs_value = this.obsValues[0]; //when no value is selected, the first value in placeholder is recorded
         this.location = "Add location";
         this.storageRef = firebase.storage().ref();
+        // this.task_name = navParams.get('task_name');
+        // this.task_option_name = navParams.get('task_option_name');
+        // this.task_options = navParams.get('task_options');
+        // this.obs_value = this.task_options[0];
         this.task_id = navParams.get('task_id');
-        console.log(this.task_id);
+        this.latitude = navParams.get('latitude');
+        this.longitude = navParams.get('longitude');
+        //  console.log(this.task_name);
     }
+    ObservationPage.prototype.ionViewDidEnter = function () {
+        //  this.getLocation();
+        this.observationService.readSubmissionOpen();
+        this.time_start = new Date().getTime();
+        console.log(this.task_id + " " + this.latitude + " " + this.longitude);
+    };
     ObservationPage.prototype.dismiss = function () {
         this.viewCtrl.dismiss();
     };
@@ -108,21 +119,32 @@ var ObservationPage = (function () {
     //   return blob;
     // }
     ObservationPage.prototype.submitObservation = function () {
+        this.time_end = new Date().getTime();
         console.log("base64" + this.base64Image);
         console.log(this.detail);
         console.log(this.longitude);
         console.log(this.latitude);
         // this.observationService.recordObservation(this.b64toBlob(this.base64Image, 512), 
         //   this.latitude, this.longitude, this.detail, this.obs_value, this.date.toString(), this.millisecond, this.task_id);
-        this.observationService.recordObservation(this.base64Image, this.latitude, this.longitude, this.detail, this.obs_value, this.task_id);
+        this.observationService.recordObservation(this.base64Image, this.latitude, this.longitude, this.detail, this.obs_value, this.task_id, this.time_start, this.time_end);
         this.showAlert();
-        this.dismiss();
     };
     ObservationPage.prototype.showAlert = function () {
+        var _this = this;
         var alert = this.alertCtrl.create({
             title: 'CONGRATULATION',
-            subTitle: 'You just earn 10 points! Submit more observation to be the top of leaderboard.',
-            buttons: ['OK']
+            subTitle: 'You just earn 20 points! Submit more observation to be the top of leaderboard.',
+            buttons: [
+                {
+                    text: 'Cancel'
+                },
+                {
+                    text: 'Ok',
+                    handler: function () {
+                        _this.viewCtrl.dismiss();
+                    }
+                }
+            ]
         });
         alert.present();
     };
@@ -138,7 +160,6 @@ ObservationPage = __decorate([
         ViewController,
         ModalController,
         ObservationService,
-        FormBuilder,
         NavParams,
         AlertController])
 ], ObservationPage);

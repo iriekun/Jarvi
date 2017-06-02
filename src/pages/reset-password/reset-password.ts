@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController, NavParams, ViewController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, ViewController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../providers/user-service';
 /*
@@ -21,10 +21,8 @@ export class ResetPasswordPage {
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
-    public modalCtrl: ModalController,
     public userService: UserService, 
     public formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController, 
     public alertCtrl: AlertController
   ) {
   	this.resetPasswordForm = formBuilder.group({
@@ -33,7 +31,8 @@ export class ResetPasswordPage {
   }
 
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.navCtrl.popToRoot();
+
   }
   resetPassword(){
      this.submitAttempt = true;

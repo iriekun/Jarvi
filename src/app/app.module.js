@@ -7,8 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
@@ -20,7 +18,9 @@ import { ActivityPage } from '../pages/activity/activity';
 import { LeaderboardPage } from '../pages/leaderboard/leaderboard';
 import { SettingPage } from '../pages/setting/setting';
 import { ObservationPage } from '../pages/observation/observation';
+import { AboutPage } from '../pages/about/about';
 import { ProfilePage } from '../pages/profile/profile';
+import { MapPage } from '../pages/map/map';
 var AppModule = (function () {
     function AppModule() {
     }
@@ -30,8 +30,6 @@ AppModule = __decorate([
     NgModule({
         declarations: [
             MyApp,
-            AboutPage,
-            ContactPage,
             HomePage,
             TabsPage,
             LoginPage,
@@ -43,7 +41,9 @@ AppModule = __decorate([
             LeaderboardPage,
             SettingPage,
             ObservationPage,
-            ProfilePage
+            ProfilePage,
+            AboutPage,
+            MapPage
         ],
         imports: [
             IonicModule.forRoot(MyApp)
@@ -51,8 +51,6 @@ AppModule = __decorate([
         bootstrap: [IonicApp],
         entryComponents: [
             MyApp,
-            AboutPage,
-            ContactPage,
             HomePage,
             TabsPage,
             LoginPage,
@@ -64,7 +62,9 @@ AppModule = __decorate([
             LeaderboardPage,
             SettingPage,
             ObservationPage,
-            ProfilePage
+            ProfilePage,
+            AboutPage,
+            MapPage
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

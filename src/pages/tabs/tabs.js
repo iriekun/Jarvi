@@ -8,26 +8,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { HomePage } from '../home/home';
+import { ViewController } from 'ionic-angular';
 import { LeaderboardPage } from '../leaderboard/leaderboard';
 import { ActivityPage } from '../activity/activity';
 import { SettingPage } from '../setting/setting';
+import { MapPage } from '../map/map';
 var TabsPage = (function () {
-    function TabsPage() {
+    function TabsPage(viewCtrl) {
+        this.viewCtrl = viewCtrl;
         // this tells the tabs component which Pages
         // should be each tab's root Page
-        this.tab1Root = HomePage;
+        this.tab1Root = MapPage;
         this.tab2Root = LeaderboardPage;
         this.tab3Root = ActivityPage;
         this.tab4Root = SettingPage;
     }
+    TabsPage.prototype.ionViewWillEnter = function () {
+        this.viewCtrl.showBackButton(false);
+    };
     return TabsPage;
 }());
 TabsPage = __decorate([
     Component({
         templateUrl: 'tabs.html'
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [ViewController])
 ], TabsPage);
 export { TabsPage };
 //# sourceMappingURL=tabs.js.map

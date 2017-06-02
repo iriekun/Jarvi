@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController,ViewController, NavParams, AlertController } from 'ionic-angular';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Camera, Geolocation } from 'ionic-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 import { ObservationService } from '../../providers/observation-service';
+import { CongratMessagePage } from '../congrat-message/congrat-message';
+import { ObsDetailPage } from '../obs-detail/obs-detail';
 
 
 //import exif from 'exif';
@@ -25,7 +26,6 @@ export class ObservationPage {
   public base64Image: any = null;
   public imageShowOnUi: any;
   public location: any;
-  public storageRef: any;
   public latitude: any;
   public longitude: any;
   public detail: any;
@@ -33,9 +33,13 @@ export class ObservationPage {
   public date: any;
   public millisecond: any;
   public task_id: any;
-  public task_option_name: any;
-  public task_options: any;
+  public task_option_name="Ice Condition";
+  public task_options=["No", "Partial", "Compact"];
+  public time_start: any;
+  public time_end: any;
 
+  databaseRef: any;
+  user: any;
   obsValues = ["No", "Partial", "Compact"];
 
   constructor(
@@ -43,21 +47,27 @@ export class ObservationPage {
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public observationService: ObservationService,
-    public formBuilder: FormBuilder,
     private navParams: NavParams,
     public alertCtrl: AlertController) {
 
- //  this.obs_value = this.obsValues[0]; //when no value is selected, the first value in placeholder is recorded
-    this.location = "Add location";
-    this.storageRef = firebase.storage().ref();
+    this.databaseRef = firebase.database().ref();
+    this.user = firebase.auth().currentUser;
+    this.obs_value=this.obsValues[0];
     this.task_id = navParams.get('task_id');
-    this.task_option_name = navParams.get('task_option_name');
-    this.task_options = navParams.get('task_options');
-    this.obs_value = this.task_options[0];
-    console.log(this.task_id);
+    this.latitude = navParams.get('latitude');
+    this.longitude = navParams.get('longitude');
+    console.log(this.task_id+ this.latitude + this.longitude);
   }
+
+  ionViewDidEnter(){
+  //  this.getLocation();
+    this.observationService.readSubmissionOpen();
+    this.time_start = new Date().getTime();
+    console.log(this.task_id+" " +this.latitude +" "+ this.longitude);
+  }
+
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.navCtrl.popToRoot(); 
   }
 
   openGallery(){
@@ -136,6 +146,7 @@ export class ObservationPage {
   // }
 
   submitObservation(){
+    this.time_end = new Date().getTime();
     console.log("base64" + this.base64Image);
     console.log(this.detail);
     console.log(this.longitude); 
@@ -143,25 +154,24 @@ export class ObservationPage {
    // this.observationService.recordObservation(this.b64toBlob(this.base64Image, 512), 
        //   this.latitude, this.longitude, this.detail, this.obs_value, this.date.toString(), this.millisecond, this.task_id);
     this.observationService.recordObservation(this.base64Image, this.latitude, this.longitude, 
-              this.detail, this.obs_value, this.task_id);
-    this.showAlert();
+        this.detail, this.obs_value, this.task_id, this.time_start, this.time_end).then(()=>{
+            this.databaseRef.child('/users/'+ this.user.uid).once("value").then((snapshot) =>{
+              this.openCongratModal(snapshot.val().user_points, snapshot.val().user_obs);
+                console.log(snapshot.val().user_points+"/"+ snapshot.val().user_obs);
+            });  
+        });   
   }
-  showAlert() {
-    let alert = this.alertCtrl.create({
-      title: 'CONGRATULATION',
-      subTitle: 'You just earn 20 points! Submit more observation to be the top of leaderboard.',
-      buttons: [
-        {
-          text: 'Cancel'
-        },
-        {
-          text: 'Ok',
-          handler: ()=>{
-            this.viewCtrl.dismiss();
-          }
-        }
-      ]
+  openCongratModal(point: any=null, obs: any=null){
+    let modal = this.modalCtrl.create(CongratMessagePage, {
+      point: point,
+      obs: obs
     });
-    alert.present();
+    modal.present();
+   // this.navCtrl.popToRoot();
+    //this.viewCtrl.dismiss();
+
+  }
+    openDetail(){
+    this.navCtrl.push(ObsDetailPage);
   }
 }

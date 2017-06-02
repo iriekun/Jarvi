@@ -7,10 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component } from '@angular/core';
-import { ModalController, NavController, ViewController, LoadingController, AlertController } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { NavController, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../providers/user-service';
+import firebase from 'firebase';
 import { TabsPage } from '../tabs/tabs';
 /*
   Generated class for the Signup page.
@@ -19,24 +20,29 @@ import { TabsPage } from '../tabs/tabs';
   Ionic pages and navigation.
 */
 var SignupPage = (function () {
-    function SignupPage(navCtrl, viewCtrl, modalCtrl, userService, formBuilder, loadingCtrl, alertCtrl) {
+    function SignupPage(navCtrl, viewCtrl, userService, formBuilder, loadingCtrl, alertCtrl, zone) {
         this.navCtrl = navCtrl;
         this.viewCtrl = viewCtrl;
-        this.modalCtrl = modalCtrl;
         this.userService = userService;
         this.formBuilder = formBuilder;
         this.loadingCtrl = loadingCtrl;
         this.alertCtrl = alertCtrl;
+        this.zone = zone;
         this.emailChanged = false;
         this.passwordChanged = false;
         this.submitAttempt = false;
+        this.userProfile = null;
+        this.page = TabsPage;
         this.signupForm = formBuilder.group({
-            firstname: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
-            lastname: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+            username: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
             email: ['', Validators.compose([Validators.required])],
             password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
         });
+        this.databaseRef = firebase.database().ref();
     }
+    SignupPage.prototype.ionViewDidEnter = function () {
+        console.log("navid" + this.navCtrl.id);
+    };
     SignupPage.prototype.goToTabsPage = function () {
         //push another page onto the history stack
         //causing the nav controller to animate the new page in
@@ -52,8 +58,15 @@ var SignupPage = (function () {
             console.log(this.signupForm.value);
         }
         else {
-            this.userService.signupUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.firstname, this.signupForm.value.lastname).then(function () {
-                _this.navCtrl.push(TabsPage);
+            this.loading = this.loadingCtrl.create({
+                content: 'Please wait...',
+            });
+            this.loading.present();
+            this.userService.signupUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.username).then(function () {
+                _this.zone.run(function () {
+                    _this.navCtrl.setRoot(TabsPage);
+                });
+                _this.loading.dismiss();
             }, function (error) {
                 _this.loading.dismiss();
                 var alert = _this.alertCtrl.create({
@@ -67,11 +80,15 @@ var SignupPage = (function () {
                 });
                 alert.present();
             });
-            this.loading = this.loadingCtrl.create({
-                dismissOnPageChange: true,
-            });
-            this.loading.present();
         }
+    };
+    SignupPage.prototype.facebookLogin = function () {
+        this.loading = this.loadingCtrl.create({
+            content: 'Please wait...',
+            duration: 4000
+        });
+        this.loading.present();
+        this.userService.loginFacebook(TabsPage);
     };
     return SignupPage;
 }());
@@ -83,11 +100,11 @@ SignupPage = __decorate([
     }),
     __metadata("design:paramtypes", [NavController,
         ViewController,
-        ModalController,
         UserService,
         FormBuilder,
         LoadingController,
-        AlertController])
+        AlertController,
+        NgZone])
 ], SignupPage);
 export { SignupPage };
 //# sourceMappingURL=signup.js.map

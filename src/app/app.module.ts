@@ -1,9 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
@@ -14,15 +11,17 @@ import { ActivityPage } from '../pages/activity/activity';
 import { LeaderboardPage } from '../pages/leaderboard/leaderboard';
 import { SettingPage } from '../pages/setting/setting';
 import { ObservationPage } from '../pages/observation/observation';
+import { AboutPage } from '../pages/about/about';
 import { ProfilePage } from '../pages/profile/profile';
+import { MapPage } from '../pages/map/map';
+import { CongratMessagePage } from '../pages/congrat-message/congrat-message';
+import { ObsDetailPage } from '../pages/obs-detail/obs-detail';
+
 
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
     TabsPage,
     LoginPage,
     SignupPage,
@@ -33,7 +32,11 @@ import { ProfilePage } from '../pages/profile/profile';
     LeaderboardPage,
     SettingPage,
     ObservationPage,
-    ProfilePage
+    ProfilePage,
+    AboutPage,
+    MapPage,
+    CongratMessagePage,
+    ObsDetailPage
 
   ],
   imports: [
@@ -42,9 +45,6 @@ import { ProfilePage } from '../pages/profile/profile';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
     TabsPage,
     LoginPage,
     SignupPage,
@@ -55,7 +55,11 @@ import { ProfilePage } from '../pages/profile/profile';
     LeaderboardPage,
     SettingPage,
     ObservationPage,
-    ProfilePage
+    ProfilePage,
+    AboutPage,
+    MapPage,
+    CongratMessagePage,
+    ObsDetailPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

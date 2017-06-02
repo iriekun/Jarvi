@@ -3,29 +3,33 @@
   ion-card {
     position: relative;
     text-align: center;
-    height: 150px;
+    height: 200px;
   }
 
   .card-title {
     position: absolute;
     top: 20%;
-    font-size: 2.0em;
+    font-size: 2.5em;
     width: 100%;
     font-weight: bold;
     color: #000;
   }
 
   .card-subtitle {
-    font-size: 1.0em;
+    font-size: 1.5.0em;
     position: absolute;
     top: 50%;
     width: 100%;
+    color: white;
+    font-weight: bold;
   }
   .card-dueDate {
-    font-size: 1.0em;
+    font-size: 1.5.0em;
     position: absolute;
     top: 80%;
     width: 100%;
+    font-weight: bold;
+
   }
 
 }

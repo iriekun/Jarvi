@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="secondary">
     <ion-title>Settings</ion-title>
   </ion-navbar>
 
@@ -19,17 +19,17 @@
       My Profile
     </button>
 
-    <button ion-item icon-left>
-      <ion-icon name='help-circle' item-left></ion-icon>
-      Help
-    </button>
-
-    <button ion-item icon-left>
+    <button ion-item (click)="openAboutPage()"  icon-left>
       <ion-icon name='information-circle' item-left></ion-icon>
       About
     </button>
 
-    <button ion-item icon-left>
+     <button ion-item (click)="openPrivacyPage()" icon-left >
+      <ion-icon name='help-circle' item-left></ion-icon>
+      Privacy Policy
+    </button>
+
+    <button ion-item (click)="openFeedbackPage()" icon-left>
       <ion-icon name='chatboxes' item-left></ion-icon>
       Feedback
     </button>

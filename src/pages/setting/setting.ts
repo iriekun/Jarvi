@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, ViewController, App } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { UserService } from '../../providers/user-service';
 
 
 import { ProfilePage } from '../profile/profile';
-import { SlideStarterPage } from '../slide-starter/slide-starter';
+import { AboutPage } from '../about/about';
 
 
 /*
@@ -27,8 +27,6 @@ export class SettingPage {
     public userService: UserService,
     public loadingCtrl: LoadingController, 
     public alertCtrl: AlertController,
-    public viewCtrl: ViewController,
-    public appCtrl: App
 ) {
 
   }
@@ -36,12 +34,44 @@ export class SettingPage {
     this.navCtrl.push(ProfilePage);
   }
 
-  logout(){
-    this.userService.logoutUser().then(() => {
-      //this.appCtrl.getRootNav().setRoot(SlideStarterPage);
-      this.navCtrl.parent.parent.setRoot(SlideStarterPage);
-      console.log("logout");
+  openAboutPage(){
+    this.navCtrl.push(AboutPage, {
+      page:1
     });
+  }
+  openPrivacyPage(){
+    //this.navCtrl.push(PrivacyPage);
+    this.navCtrl.push(AboutPage, {
+      page:2
+    });
+  }
+  openFeedbackPage(){
+     this.navCtrl.push(AboutPage, {
+      page:3
+    });
+  }
+
+  logout(){
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure?',
+      subTitle: 'You will need to login again to keep using the application',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Ok',
+          handler: ()=>{
+            this.userService.logoutUser().then(() => {
+              window.location.reload();
+              //this.navCtrl.parent.parent.setRoot(SlideStarterPage);
+              console.log("logout");
+            });
+          }
+        }
+      ]
+    });
+    alert.present();    
   }
 
 }

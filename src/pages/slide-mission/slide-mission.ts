@@ -1,6 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
-import { ModalController, NavController, NavParams,ViewController} from 'ionic-angular';
-import { ObservationPage } from '../observation/observation';
+import { Component, NgZone } from '@angular/core';
+import { Platform, ModalController, NavController, NavParams,ViewController} from 'ionic-angular';
+import {InAppBrowser} from 'ionic-native';
+import { TabsPage } from '../tabs/tabs';
+import firebase from 'firebase';
+
+
 
 /*
   Generated class for the SlideMission page.
@@ -13,41 +17,69 @@ import { ObservationPage } from '../observation/observation';
   templateUrl: 'slide-mission.html'
 })
 export class SlideMissionPage {
-
- // @ViewChild(Slides) slides: Slides;
   
-  public task_id : any;
-  public task_name: any;
-  public task_stories: any;
-  public task_option_name: any;
-  public task_options: any;
 
+  public databaseRef : any; 
+  public user: any;
+  agent: any;
+
+  slides = [
+    {  
+      desc:"",
+      images: "assets/img/s1.png"
+    },
+    { 
+      desc: "we have been looking for you everywhere and yeah finally we found you.",
+      images: "assets/img/s2.png"
+    },
+    {  
+      desc: "",
+      images: "assets/img/s3.png"
+    },
+    {  
+      desc: "",
+      images: "assets/img/s4.png"
+    },
+    { 
+      desc: "",
+      images: "assets/img/s5.png"
+    },
+    { 
+      desc: "",
+      images: "assets/img/s6.png"
+    },
+    { 
+      desc: "We hope you will join us!", 
+      images: "assets/img/s7.png"
+    },
+   
+  ];
+  
   constructor(
+    public platform: Platform,
     public navCtrl: NavController,
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
-    private navParams: NavParams) {
+    private navParams: NavParams,
+    private zone: NgZone) {
 
-    this.task_id = navParams.get('task_id');
-    this.task_stories = navParams.get('task_stories');
-    this.task_option_name = navParams.get('task_option_name');
-    this.task_options = navParams.get('task_options');
-    this.task_name = navParams.get('task_name');
+      this.user = firebase.auth().currentUser;
+      this.databaseRef = firebase.database().ref();
 
+      this.databaseRef.child('/users/'+ this.user.uid).once("value").then((snapshot) =>{
+        this.agent = snapshot.val().user_name;
+      });  
   }
-  dismiss() {
-    this.viewCtrl.dismiss();
+
+
+
+  openLink(){
+      let browser = new InAppBrowser('https://ionic.io', '_system', "location=yes");
+      browser.show();
   }
-  openModalObservationPage(){
-    this.dismiss();
-    let modal = this.modalCtrl.create(ObservationPage, {
-      task_id: this.task_id,
-      task_option_name: this.task_option_name,
-      task_options: this.task_options
+  goToTabPage(){
+    this.zone.run(() => {
+      this.navCtrl.setRoot(TabsPage);
     });
-    modal.present();
-  }
-  skip(slide){
-    slide.slideTo(2);
   }
 }

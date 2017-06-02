@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { LoadingController } from 'ionic-angular';
 import * as firebase from 'firebase';
+import { Chart } from 'chart.js';
+
 
 
 
@@ -15,60 +17,95 @@ import * as firebase from 'firebase';
   templateUrl: 'activity.html'
 })
 export class ActivityPage {
+  @ViewChild('doughnutCanvas') doughnutCanvas;
+    doughnutChart: any;
+
 	public databaseRef : any; 
-	public user: any;
-	public total_point: any;
-	public total_obs: any;
-	public obj: any = {};
-	public dateArray = [];
-	public taskArray=[];
-	public len: any =0;
+  public loading: any;
 
+	public obj1 : any = {};
+  public obj2 : any = {};
+  public obj3 : any = {};
+  public city=1;
+  constructor(public loadingCtrl: LoadingController) {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
   			this.databaseRef = firebase.database().ref();
-  			this.user = firebase.auth().currentUser;
 
   }
-   range = (value) => { 
-    let a = []; 
-    for(let i = 0; i < value; ++i) { 
-      a.push(i) 
-    } 
-    return a; 
-  }
+  ionViewDidEnter(){
+    if(this.city==1){
 
-  ionViewDidEnter() {
-    console.log('ionViewDidLoad ActivityPage');
-    this.userData();
-    this.historyData();
-    this.taskArray = Object.keys(this.obj).map(key => this.obj[key]); //return value
-    this.dateArray = Object.keys(this.obj); //return key
-    if(this.taskArray.length>0){
-		  this.len = this.taskArray.length;
-	  }
+    this.loading = this.loadingCtrl.create({
+         content: "Please wait..."
+      });
+    this.loading.present();
+    setTimeout(() => {
+        this.loading.dismiss();
+      }, 5000);
+    this.getRecord().then(() =>{
+      this.loading.dismiss();
+      let length = Object.keys(this.obj1).length+Object.keys(this.obj2).length+Object.keys(this.obj3).length;
+      let data1 = Object.keys(this.obj1).length/length*100;
+      let data2 = Object.keys(this.obj2).length/length*100;
+      let data3 = Object.keys(this.obj3).length/length*100;
+        this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {  
+   
+          type: 'doughnut',
+          data: {
+              labels: ["Compact", "Partial", "No"],
+              datasets: [{
+                  label: '# of Votes',
+                  data: [data1, data2, data3],
+                  backgroundColor: [
+                      // 'rgba(255, 99, 132, 0.2)',
+                      // 'rgba(54, 162, 235, 0.2)',
+                      // 'rgba(255, 206, 86, 0.2)'
+                      "#FF6384",
+                      "#36A2EB",
+                      "#FFCE56"
+                      
+                  ],
+                  hoverBackgroundColor: [
+                      "#FF6384",
+                      "#36A2EB",
+                      "#FFCE56"
+                      
+                  ]
+              }]
+          }
+   
+        });
+      
+      
+    });
+   }
   }
-  userData(): any{
-  	this.databaseRef.child('/users/'+ this.user.uid).once("value").then((snapshot) =>{
-		//	this.getPoints(snapshot.val().user_points);
-			this.getUserData(snapshot.val().user_points, snapshot.val().user_obs);
-	});	
-  }
-  getUserData(point: any = null, obs: any=null): any{
-  	this.total_point = point;
-  	this.total_obs = obs;
-  }
-  historyData(): any{
-  	this.databaseRef.child('/history/'+this.user.uid).limitToLast(10).once("value", (snapshot) =>{
-			snapshot.forEach((data) => {
-			 //   console.log("The " + data.key + " score is " + data.val());
-			   	this.getHistoryData(data);
-			});
+  getRecord(){
 
-	});
+    return this.databaseRef.child('/observations/').orderByChild('obs_value').once("value").then((snapshot) =>{
+      snapshot.forEach((data) => {
+        if(data.val().obs_value=="Compact"){
+          this.getRecordValue1(data);
+        }else if(data.val().obs_value=="Partial"){
+          this.getRecordValue2(data);
+        }else{
+          this.getRecordValue3(data);
+
+        }
+      });
+    });
   }
-  getHistoryData(data: any =null): any{
-  		this.obj[data.key] = data.val();		
+  getRecordValue1(data: any = null) : any{
+    this.obj1[data.key] = data.val();
+
+  }
+  getRecordValue2(data: any = null) : any{
+    this.obj2[data.key] = data.val();
+
+  }
+  getRecordValue3(data: any = null) : any{
+    this.obj3[data.key] = data.val();
+
   }
 
 }

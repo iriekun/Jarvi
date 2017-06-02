@@ -25,17 +25,12 @@ var SlideStarterPage = (function () {
             {
                 title: "Want to be a Scientist?",
                 description: "Being a scientist is fun and easy! Help your community by entering your obsrvations.",
-                image: "assets/img/saopolo.jpg",
+                image: "",
             },
             {
-                title: "Want to Get Recognized?",
-                description: "Be the top challenger of the month and get a green citizen certificate issued from your municipality",
-                image: "assets/img/saopolo.jpg",
-            },
-            {
-                title: "Are You Ready to Accept the Mission?",
+                title: "Are You Ready to Start?",
                 description: "Join the community to make <b>observation</b> and have <b>fun</b>",
-                image: "assets/img/saopolo.jpg",
+                image: "",
             }
         ];
     }
@@ -52,7 +47,7 @@ var SlideStarterPage = (function () {
 SlideStarterPage = __decorate([
     Component({
         selector: 'page-slide-starter',
-        templateUrl: 'slide-starter.html'
+        templateUrl: 'slide-starter.html',
     }),
     __metadata("design:paramtypes", [ModalController,
         NavController])

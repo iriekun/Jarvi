@@ -6,30 +6,32 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Activity</ion-title>
+  <ion-navbar color="secondary">
+    <ion-title>Statistic</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-	<ion-grid>
-		<ion-row>
-			<ion-col style="text-align: center;">
-				<div><h3>{{this.total_point}}</h3> <br> Total Points </div>
-			</ion-col>
-			<ion-col style="text-align: center;">
-				<div> <h3>{{this.total_obs}}</h3> <br> Total Observations </div>
-			</ion-col>
-		</ion-row>
-	</ion-grid>
 	<ion-list>
-		<ion-list-header>History</ion-list-header>
-	  	<ion-item *ngFor="let i of range(this.len)">
-	  		<p>{{this.dateArray[i]}}</p>
-		    <h4>{{this.taskArray[i].split("-")[0]}}</h4>
-		    <p>{{this.taskArray[i].split("-")[1]}}</p>
-	  	</ion-item>
+		<ion-item>
+		<ion-label>Select City</ion-label>
+	<ion-select [(ngModel)]="city" (ionChange)="ionViewDidEnter()">
+    	<ion-option [value]=1 selected="true">Lappeenranta</ion-option>
+    	<ion-option [value]=2>Helsinki</ion-option>
+    	<ion-option [value]=3>Tempere</ion-option>
+	</ion-select>
+		</ion-item>
 	</ion-list>
+	
+	
+	<ion-card *ngIf="city==1">
+		<ion-card-header>
+			Condition of Ice Coverage (%)
+	  	</ion-card-header>
+	  	<ion-card-content>
+	  		<canvas #doughnutCanvas></canvas>
+	  	</ion-card-content>
+	</ion-card>
 </ion-content>

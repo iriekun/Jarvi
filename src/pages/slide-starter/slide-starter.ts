@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { NavController, ModalController, Platform, ViewController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { SignupPage } from '../signup/signup';
 
@@ -23,29 +23,26 @@ export class SlideStarterPage {
 
   }
   openModalLogin() {
-    let modal = this.modalCtrl.create(LoginPage);
-    modal.present();
+    // let modal = this.modalCtrl.create(LoginPage);
+    // modal.present();
+    this.navCtrl.push(LoginPage);
   }
   openModalSignup(){
-    let modal = this.modalCtrl.create(SignupPage);
-    modal.present();
+    // let modal = this.modalCtrl.create(SignupPage);
+    // modal.present();
+    this.navCtrl.push(SignupPage);
   }
 
 slides = [
   {
-    title: "Want to be a Scientist?",
-    description: "Being a scientist is fun and easy! Help your community by entering your obsrvations.",
-    image: "assets/img/saopolo.jpg",
+    title: "WANT TO BE A SCIENTIST?",
+    description: "Being a scientist is fun and easy! Help your community by submitting your observations.",
+    image: "assets/img/compact.jpg",
   },
   {
-    title: "Want to Get Recognized?",
-    description: "Be the top challenger of the month and get a green citizen certificate issued from your municipality",
-    image: "assets/img/saopolo.jpg",
-  },
-  {
-    title: "Are You Ready to Accept the Mission?",
+    title: "ARE YOU READY TO START?",
     description: "Join the community to make <b>observation</b> and have <b>fun</b>",
-    image: "assets/img/saopolo.jpg",
+    image: "assets/img/lake.jpg",
   }
 ];
  

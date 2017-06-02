@@ -1,3 +1,8 @@
 page-login {
-
+	.invalid {
+	    border: 1px solid #ea6153;
+	}
+	.error-message p{
+		color: #ea6153;
+	}
 }

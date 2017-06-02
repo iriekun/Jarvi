@@ -7,14 +7,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
-import * as firebase from 'firebase';
-import { ObservationPage } from '../pages/observation/observation';
+import firebase from 'firebase';
+import { TabsPage } from '../pages/tabs/tabs';
+import { SlideStarterPage } from '../pages/slide-starter/slide-starter';
+import { Connectivity } from '../providers/connectivity';
 var MyApp = (function () {
     // rootPage = SlideStarterPage; //LoginPage;//TabsPage;
     function MyApp(platform) {
+        var _this = this;
         var config = {
             apiKey: "AIzaSyA5kVVLUKGZ-i_7U7UD1FzOyck8BM22KoA",
             authDomain: "jarvigogreen.firebaseapp.com",
@@ -23,15 +26,21 @@ var MyApp = (function () {
             messagingSenderId: "678984129612"
         };
         firebase.initializeApp(config);
-        this.rootPage = ObservationPage; //SlideStarterPage;//TabsPage;
-        // firebase.auth().onAuthStateChanged((user) => {
-        //   if (user) {
-        //     // User is signed in.
-        //     this.rootPage = ;
-        //   } else { 
-        //      this.rootPage = LoginPage;
-        //   }
-        // });
+        this.zone = new NgZone({});
+        var unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
+            _this.zone.run(function () {
+                if (!user) {
+                    _this.rootPage = SlideStarterPage;
+                    unsubscribe();
+                    console.log("user is logout");
+                }
+                else {
+                    _this.rootPage = TabsPage;
+                    unsubscribe();
+                    console.log("user is login");
+                }
+            });
+        });
         platform.ready().then(function () {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -43,7 +52,8 @@ var MyApp = (function () {
 }());
 MyApp = __decorate([
     Component({
-        templateUrl: 'app.html'
+        templateUrl: 'app.html',
+        providers: [Connectivity]
     }),
     __metadata("design:paramtypes", [Platform])
 ], MyApp);

@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { ModalController, NavController,ViewController, LoadingController, AlertController  } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../providers/user-service';
 
 import { ResetPasswordPage } from '../reset-password/reset-password';
 import { SignupPage } from '../signup/signup';
-import { TabsPage } from '../tabs/tabs';
+
+import { SlideMissionPage } from '../slide-mission/slide-mission';
+
 
 /*
   Generated class for the Login page.
@@ -32,7 +34,8 @@ import { TabsPage } from '../tabs/tabs';
       public userService: UserService, 
       public formBuilder: FormBuilder,
       public loadingCtrl: LoadingController, 
-      public alertCtrl: AlertController)
+      public alertCtrl: AlertController,
+       public zone: NgZone)
     {
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required])],
@@ -44,9 +47,10 @@ import { TabsPage } from '../tabs/tabs';
       this.viewCtrl.dismiss();
     }
     openModalResetPwd(){
-      this.dismiss();
-      let modal = this.modalCtrl.create(ResetPasswordPage);
-      modal.present();
+      // this.dismiss();
+      // let modal = this.modalCtrl.create(ResetPasswordPage);
+      // modal.present();
+      this.navCtrl.push(ResetPasswordPage);
     }
     login(){
       this.submitAttempt = true;
@@ -54,8 +58,19 @@ import { TabsPage } from '../tabs/tabs';
       if (!this.loginForm.valid){
         console.log(this.loginForm.value);
       } else {
+        this.loading = this.loadingCtrl.create({
+          content:'Please wait...',
+        });
+        this.loading.present();
         this.userService.loginUser(this.loginForm.value.email, this.loginForm.value.password).then(() => {
-          this.navCtrl.push(TabsPage);
+
+          this.navCtrl.push(SlideMissionPage);
+
+          // this.zone.run(() => {
+          //   this.navCtrl.setRoot(TabsPage);
+          // });
+          this.loading.dismiss();
+
         }, error => {
           this.loading.dismiss();
             let alert = this.alertCtrl.create({
@@ -69,18 +84,23 @@ import { TabsPage } from '../tabs/tabs';
             });
             alert.present();
           });
-
-        this.loading = this.loadingCtrl.create({
-          dismissOnPageChange: true,
-        });
-        this.loading.present();
       }
 
     }
     openModalSignup(){
-      this.dismiss();
-      let modal = this.modalCtrl.create(SignupPage);
-      modal.present();
+      
+      this.navCtrl.push(SignupPage);
+      // let modal = this.modalCtrl.create(SignupPage);
+      // modal.present();
+    }
+    facebookLogin(){ 
+      this.loading = this.loadingCtrl.create({
+        content:'Please wait...',
+        duration: 4000
+      });
+      this.loading.present();
+      this.userService.loginFacebook(SlideMissionPage);
+     
     }
 
   }

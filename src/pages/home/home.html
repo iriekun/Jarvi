@@ -1,28 +1,16 @@
 <ion-header>
 	<ion-navbar hideBackButton="true">
 		<ion-title>Home</ion-title>
-	</ion-navbar>
-
-	<ion-toolbar no-border-top>
-		<ion-segment [(ngModel)]="home">
-			<ion-segment-button value="missions">Missions </ion-segment-button>
-			<ion-segment-button value="news"> News </ion-segment-button>
-		</ion-segment>
-	</ion-toolbar>
+	</ion-navbar>	
 </ion-header>
 
 <ion-content class="card-background-page">
 
-	<div [ngSwitch]="home">
-		<div *ngSwitchCase="'missions'">
-			<ion-card *ngFor="let task of tasks" (click)="gotoMission(task.id, task.name, task.optionName, task.options, task.stories)" style="width: 100%; padding: 0; margin: 0">
-				<img src="{{task.image}}"/>
-				<div class="card-title">{{task.missionNum}}</div>
-				<div class="card-subtitle">{{task.name}}</div>
-				<div class="card-dueDate">Due Date: {{task.dueDate}}</div>
-			</ion-card>
-		</div>
-		<div *ngSwitchCase="'news'">
-		</div>
-	</div>
+	<ion-card *ngFor="let task of tasks" (click)="gotoMission(this.task_subtitle, task.optionName, task.options, task.stories)" style="width: 100%; padding: 0; margin: 0">
+		<img src="{{task.image}}"/>
+		<div class="card-title">{{this.task_title}}</div>
+		<div class="card-subtitle">{{this.task_subtitle}}</div>
+		<div class="card-dueDate">Due Date: {{this.task_duedate}}</div>
+	</ion-card>
+		
 </ion-content>
