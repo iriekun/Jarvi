@@ -23,11 +23,11 @@ export class MyApp {
 
   constructor(platform: Platform) {
     var config = {
-      apiKey: "AIzaSyA5kVVLUKGZ-i_7U7UD1FzOyck8BM22KoA",
-      authDomain: "jarvigogreen.firebaseapp.com",
-      databaseURL: "https://jarvigogreen.firebaseio.com",
-      storageBucket: "jarvigogreen.appspot.com",
-      messagingSenderId: "678984129612"
+      apiKey: "",
+      authDomain: "",
+      databaseURL: "",
+      storageBucket: "",
+      messagingSenderId: ""
     };
     firebase.initializeApp(config);
 
