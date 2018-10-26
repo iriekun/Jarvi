@@ -16,8 +16,8 @@ A lakes observation application written by using Ionic 2 and Firebase
 <b>How to install and run </b>
 <ul>
 <li> download or clone project from https://github.com/iriekun/Jarvi.git </li>
-<li> run npm install </li>
-<li> run ionic run android OR ionic run ios OR ionic serve (if you use Chrome) </li>
+  <li> run <code> npm install </code> </li>
+  <li> run <code> ionic run android </code> OR <code> ionic run ios </code> OR <code> ionic serve (if you use Chrome) </code> </li>
 </ul>
 
 Learn more at https://ionicframework.com
